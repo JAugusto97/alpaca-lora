@@ -135,25 +135,25 @@ class AlpacaLora:
         if torch.__version__ >= "2" and sys.platform != "win32":
             self.model = torch.compile(self.model)
 
-    def process_batch(
+    def prompt(
         self,
-        prompts: List[str],
+        prompt: str,
         temperature=0.1,
         top_k=50,
         top_p=0.75,
         num_beams=4,
         max_new_tokens=512,
     ):
-        for prompt in prompts:
-            answer = ""
-            for item in self.evaluate(
-                prompt,
-                temperature=temperature,
-                top_k=top_k,
-                top_p=top_p,
-                max_new_tokens=max_new_tokens,
-                num_beams=num_beams,
-            ):
-                answer += item
+        answer = ""
+        for item in self.evaluate(
+            prompt,
+            input=None,
+            temperature=temperature,
+            top_k=top_k,
+            top_p=top_p,
+            max_new_tokens=max_new_tokens,
+            num_beams=num_beams,
+        ):
+            answer += item
 
-            yield answer
+        return answer
